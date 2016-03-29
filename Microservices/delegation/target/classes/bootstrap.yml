@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: delegation
+  cloud:
+    config:
+      uri: ${vcap.services.${PREFIX:}configserver.credentials.uri:http://user:password@localhost:8888}
+
+eureka.client.serviceUrl.defaultZone: http://user:password@127.0.0.1:8761/eureka/

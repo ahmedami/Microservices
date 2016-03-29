@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/support/discovery/Discovery.iml" filepath="$PROJECT_DIR$/support/discovery/Discovery.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Microservices.iml" filepath="$PROJECT_DIR$/Microservices.iml" />
+      <module fileurl="file://$PROJECT_DIR$/support/authserver/authserver.iml" filepath="$PROJECT_DIR$/support/authserver/authserver.iml" />
+      <module fileurl="file://$PROJECT_DIR$/delegation/delegation.iml" filepath="$PROJECT_DIR$/delegation/delegation.iml" />
+      <module fileurl="file://$PROJECT_DIR$/support/gate/gate.iml" filepath="$PROJECT_DIR$/support/gate/gate.iml" />
+      <module fileurl="file://$PROJECT_DIR$/services/trakingfile/trakingService.iml" filepath="$PROJECT_DIR$/services/trakingfile/trakingService.iml" />
+    </modules>
+  </component>
+</project>

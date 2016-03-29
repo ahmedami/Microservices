@@ -1,0 +1,33 @@
+server:
+  port: 0
+spring:
+  application:
+    name: delegation
+  cloud:
+    config:
+      uri: ${vcap.services.${PREFIX:}configserver.credentials.uri:http://user:password@localhost:8888}
+  oauth2:
+    resource:
+      userInfoUri: http://localhost:9999/uaa/user
+#security:
+#  oauth2:
+#    resource:
+#      userInfoUri: https://localhost:9999/uaa/user
+#
+#management:
+#  security:
+#    enabled: false
+
+service:
+  defaultMinMs: 100
+  defaultMaxMs: 200
+
+eureka:
+  instance:
+    leaseRenewalIntervalInSeconds: 10
+    metadataMap:
+      instanceId: ${vcap.application.instance_id:${spring.application.name}:${spring.application.instance_id:${random.value}}}
+  client:
+    registryFetchIntervalSeconds: 5
+    serviceUrl:
+      defaultZone: http://user:password@127.0.0.1:8761/eureka/
