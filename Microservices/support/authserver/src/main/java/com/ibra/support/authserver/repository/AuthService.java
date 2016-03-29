@@ -35,7 +35,7 @@ public class AuthService
 		return null;
 	}
 
-	public User findByEmail(String email, String password)
+	public User findByEmail(String email)
 	{
 		User user = getUserByEmail(email);
 		if (user == null) return null;
