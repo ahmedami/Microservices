@@ -3,8 +3,19 @@ package com.ibra.support.authserver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configurers.GlobalAuthenticationConfigurerAdapter;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
@@ -21,46 +32,10 @@ import java.security.Principal;
 @EnableAuthorizationServer
 public class AuthserverApplication {
 
-	@RequestMapping("/user")
-	public Principal user(Principal user) {
-		return user;
-	}
-//	@Autowired
-//	private UserDetailsService userDetailsService;
-//	public static ApplicationContext application;
-//	@Bean
-//	public PasswordEncoder passwordEncoder() {
-//		return new StandardPasswordEncoder();
-//	}
-
 	public static void main(String[] args) {
 		SpringApplication.run(AuthserverApplication.class, args);
 	}
-//	@Autowired
-//	public void init(AuthenticationManagerBuilder auth) throws Exception {
-//		auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-//	}
-//	@Configuration
-//	protected  class AuthenticationManagerConfiguration extends GlobalAuthenticationConfigurerAdapter {
-//
-//		@Override
-//		public void init(AuthenticationManagerBuilder auth) throws Exception {
-//			auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-//		}
-//
-//		}
-//	@Configuration
-//	@EnableResourceServer
-//	protected static class ResourceServer extends ResourceServerConfigurerAdapter {
-//
-//
-//
-//		@Override
-//		public void configure(HttpSecurity http) throws Exception {
-//			http.authorizeRequests().anyRequest().authenticated();
-//		}
-//TypeNotPresentExceptionProxy
-//	}
+
 	@Configuration
 	protected static class OAuth2Config extends AuthorizationServerConfigurerAdapter {
 
@@ -81,7 +56,30 @@ public class AuthserverApplication {
 					.scopes("trust");
 		}
 	}
+}
 
+@Configuration
+class WebSecurityConfiguration extends GlobalAuthenticationConfigurerAdapter {
+	@Autowired
+	UserDetailsService userDetailsService;
+
+	@Override
+	public void init(AuthenticationManagerBuilder auth) throws Exception {
+		auth.userDetailsService(userDetailsService());
+	}
+}
+
+@EnableWebSecurity
+@Configuration
+class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http.authorizeRequests().antMatchers("/traking").hasAnyAuthority("EMPLOYEE").anyRequest()
+				.fullyAuthenticated().and().
+				httpBasic().and().
+				csrf().disable();
+	}
 
 }
 
